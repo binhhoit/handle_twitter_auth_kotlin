@@ -1,0 +1,215 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs"
+
+
+def MAJOR = 1
+def MINOR = 5
+def PATCH = 0
+def BUILD_NUMBER = 1
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.0"
+    defaultConfig {
+        applicationId "net.dirox.idareyou"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode BUILD_NUMBER
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        renderscriptTargetApi 29 //must match target sdk and build tools
+        renderscriptSupportModeEnabled true
+    }
+    buildTypes {
+        release {
+            lintOptions {
+                disable 'MissingTranslation'
+                checkReleaseBuilds false
+                // Or, if you prefer, you can continue to check for errors in release builds,
+                // but continue the build even when errors are found:
+                abortOnError false
+
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    android {
+        flavorDimensions "default"
+    }
+
+    productFlavors {
+        Staging {
+            versionName "${MAJOR}.${MINOR}.${PATCH}"
+            applicationId "net.dirox.idareyou"
+            buildConfigField "String", "HOST", '"https://api.idareu.dirox.dev/"'
+            buildConfigField "String", "FILE_HOST", '"https://api.idareu.dirox.dev/api/v1/Files/"'
+            buildConfigField "String", "GOOGLEAPIS_HOST", '"https://www.googleapis.com/"'
+            buildConfigField "Boolean", "DEBUG_MODE", "false" // no debug mode
+            resValue "string", "APP_NAME", "IDareYou"
+            resValue "string", "APP_FACEBOOK_ID", "673019753163665"
+            resValue "string", "APP_FACEBOOK_SECRET", "99343ac972c8f7033245582dfd3e3535"
+            resValue "string", "APP_FACEBOOK_CLIENT_TOKEN", "8c132625477609ca8463396db57a9335"
+            resValue "string", "APP_FACEBOOK_ACCOUNT_KIT_APP_SECRET", "5a68d818df941ee0a8346821c11d16c1"
+            resValue "string", "APP_FACEBOOK_ACCOUNT_KIT_CLIENT_TOKEN", "7bcf881b28be997d60fa4c616363b736"
+            resValue "string", "APP_FACEBOOK_LOGIN_PROTOCOL_SCHEME", "ak7bcf881b28be997d60fa4c616363b736"
+            resValue "string", "APP_GOOGLE_CLIENT_ID", "601387200679-u80mi222rqv5jhhhqns0bla8vie2hp14.apps.googleusercontent.com"
+            resValue "string", "APP_GOOGLE_CLIENT_SERECT", "PsfBe-JDf8gaTag55EBq4o19"
+            signingConfig signingConfigs.debug
+        }
+        
+        Prod {
+            versionName "${MAJOR}.${MINOR}.${PATCH}"
+            applicationId "net.dirox.idareyou"
+            buildConfigField "String", "HOST", '"https://api.idareu.dirox.dev/"'
+            buildConfigField "String", "FILE_HOST", '"https://api.idareu.dirox.dev/api/v1/Files/"'
+            buildConfigField "String", "GOOGLEAPIS_HOST", '"https://www.googleapis.com/"'
+            buildConfigField "Boolean", "DEBUG_MODE", "false" // no debug mode
+            resValue "string", "APP_NAME", "IDareYou"
+            resValue "string", "APP_FACEBOOK_ID", "673019753163665"
+            resValue "string", "APP_FACEBOOK_SECRET", "99343ac972c8f7033245582dfd3e3535"
+            resValue "string", "APP_FACEBOOK_CLIENT_TOKEN", "8c132625477609ca8463396db57a9335"
+            resValue "string", "APP_FACEBOOK_ACCOUNT_KIT_APP_SECRET", "5a68d818df941ee0a8346821c11d16c1"
+            resValue "string", "APP_FACEBOOK_ACCOUNT_KIT_CLIENT_TOKEN", "7bcf881b28be997d60fa4c616363b736"
+            resValue "string", "APP_FACEBOOK_LOGIN_PROTOCOL_SCHEME", "ak7bcf881b28be997d60fa4c616363b736"
+            resValue "string", "APP_GOOGLE_CLIENT_ID", "601387200679-jpfeo7ajs2ei4p6vd149if0du5raa5tp.apps.googleusercontent.com"
+            resValue "string", "APP_GOOGLE_CLIENT_SERECT", "U6vv6E1xpMJwqbcOiL-NtVG2"
+        }
+        Dev {
+            versionName "${MAJOR}.${MINOR}.${PATCH}"
+            applicationId "net.dirox.idareyou"
+            buildConfigField "String", "HOST", '"https://api-dev.idareu.dirox.dev/"'
+            buildConfigField "String", "FILE_HOST", '"https://api-dev.idareu.dirox.dev/api/v1/Files/"'
+            buildConfigField "String", "GOOGLEAPIS_HOST", '"https://www.googleapis.com/"'
+            buildConfigField "Boolean", "DEBUG_MODE", "true" // test debug mode
+            resValue "string", "APP_NAME", "IDareYou-Dev"
+            resValue "string", "APP_FACEBOOK_ID", "673019753163665"
+            resValue "string", "APP_FACEBOOK_SECRET", "99343ac972c8f7033245582dfd3e3535"
+            resValue "string", "APP_FACEBOOK_CLIENT_TOKEN", "8c132625477609ca8463396db57a9335"
+            resValue "string", "APP_FACEBOOK_ACCOUNT_KIT_APP_SECRET", "5a68d818df941ee0a8346821c11d16c1"
+            resValue "string", "APP_FACEBOOK_ACCOUNT_KIT_CLIENT_TOKEN", "7bcf881b28be997d60fa4c616363b736"
+            resValue "string", "APP_FACEBOOK_LOGIN_PROTOCOL_SCHEME", "ak7bcf881b28be997d60fa4c616363b736"
+            resValue "string", "APP_GOOGLE_CLIENT_ID", "601387200679-jpfeo7ajs2ei4p6vd149if0du5raa5tp.apps.googleusercontent.com"
+            resValue "string", "APP_GOOGLE_CLIENT_SERECT", "U6vv6E1xpMJwqbcOiL-NtVG2"
+        }
+    }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    androidExtensions {
+        experimental = true
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version_ktx"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version_ktx"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation 'com.wowza.gocoder.sdk.android:com.wowza.gocoder.sdk:2.0.0@aar'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+
+    // lifecycle
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+
+    // dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt("com.google.dagger:dagger-compiler:$dagger_version")
+    kapt("com.google.dagger:dagger-android-processor:$dagger_version")
+
+    // rxjava
+    implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+    // rxandroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    // social
+    implementation 'com.facebook.android:account-kit-sdk:5.+'
+    implementation 'com.facebook.android:facebook-android-sdk:5.0.3'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    // fire base
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
+
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //recyclerview
+    implementation "com.android.support:recyclerview-v7:29.0.0"
+
+    //cardview
+    implementation 'com.android.support:cardview-v7:29.0.0'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    //okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //circle imageview
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //Rounded ImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.github.ksoichiro:android-observablescrollview:1.5.0'
+
+    // section Adapter recycel view
+    implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
+
+    implementation 'com.eightbitlab:blurview:1.6.2'
+
+    implementation 'com.github.jjobes:slideDateTimePicker:1.0.2'
+
+    implementation 'com.google.android:flexbox:1.0.0'
+    implementation 'com.github.anonymous-ME:TagsEditText:0.5.0'
+    implementation 'jp.wasabeef:blurry:2.0.3'
+
+    //topBarStatus
+    implementation 'dev.dworks.libs:volleyplus:0.1.4'
+    implementation project(path: ':liveVideoBroadcasterSDK')
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.6'
+    implementation files('libs/android-sdk-0.1.2.aar')
+    //country_code_picker
+    implementation project(':country_code_picker')
+    //UI Validations
+    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
+
+    implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
+    implementation 'com.twitter.sdk.android:twitter:3.3.0'
+    
+
+}
+
+apply plugin: 'com.google.gms.google-services'
